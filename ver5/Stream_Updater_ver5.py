@@ -18,6 +18,7 @@ import sys
 #   Now has a '+space' button that automatically adds spaces to a field
 # ver05:
 #   Now facilitates the input of a port
+#   Highlights re-added
 
 myip = socket.gethostbyname(socket.gethostname()) # The local IP for this computer
 myPort = sys.argv[1] if len(sys.argv) >1 else "NOPORT"
@@ -115,20 +116,46 @@ def fixTwitter(twit):
         return twit
     else:
         return "@NULLFIELD"
-def highlightUpdate():
-    fout6 = open("Highlights.txt","a")
-    # SSF#10 JeBB vs Zephyr Game 1 1st cloud stock
-    wStr = E5.get() + " " + E1.get() + " vs " + E3.get() + " " + E6.get() + "\n"
-    fout6.write(wStr)
 
+# Appends a highlight mark to a .csv
+def highlightUpdate():
+    fn = "Highlights.csv"
+    # Write a header if the file doesn't exist
+    if fn not in os.listdir(os.getcwd()):
+        with open(fn,"a") as f:
+            header = ["Tournament Name",
+                      "p1",
+                      "p2",
+                      "Bracket Stage",
+                      "Game #",
+                      "Comment"]
+            f.write(",".join(header) + "\n")
+    # Write the highlights by reading entry boxes
+    bracket_stage = choiceVar1.get() + choiceVar2.get().replace("-","")
+    with open(fn,"a") as f:
+        # EXAMPLE: BMS#100,JeBB,Zephyr,Grand Finals,Game 1,Comment
+        elements = [E5.get(), # Tournament Name
+                    E1.get(), # p1 Name
+                    E3.get(), # p2 Name
+                    bracket_stage, # Bracket Stage
+                    "Game " + str(1 + int(E2.get()) + int(E4.get())), # Game Number
+                    E6.get()
+                    ]
+        # wStr = E5.get() + " " + E1.get() + " vs " + E3.get() + " " + E6.get() + "\n"
+        wStr = ",".join(elements)
+        f.write(wStr + "\n")
+
+# Clears the "Names" field
 def clearN():
     v1.set('')
     v3.set('')
 
+# Clears the "Games" field
 def clearG():
     v2.set('0')
     v4.set('0')
 
+# Clears all fields
 def clearA():
     v0.set('')
     v1.set('')
@@ -137,16 +164,19 @@ def clearA():
     v4.set('')
     v5.set('')
 
+# Adds +1 to the first player's game score
 def plusone(num):
     temp = int(E2.get());
     v2.set(str(temp+num));
     update()
 
+# Adds +1 to the second player's game score
 def plustwo(num):
     temp = int(E4.get());
     v4.set(str(temp+num));
     update()
 
+# Swaps the names of player 1 and player 2
 def switch():
     temp1 = E1.get();
     temp2 = E3.get();
@@ -221,6 +251,19 @@ L7 = Label(tk, text="Clear:").grid(row = 7, column = 1, sticky = 'e')
 # Reminder to those
 if myPort != "NOPORT":
     L8 = Label(tk, text=f"{myip}:{myPort}", font='Helvetica 10 bold').grid(row = 8, column = 1, columnspan = 6)
+
+# Highlights
+v6 = StringVar()
+L9 = Label(tk, text="Highlights").grid(row = 5, column = 20, columnspan = 20)
+E6 = Entry(tk, textvariable = v6)
+L9 = Label(tk, text="Comment")
+L9.grid(row = 6, column = 20, columnspan = 2)
+E6.grid(row = 6, column = 22, columnspan = 20, padx = 20)
+v6.set('Alternis taking first stock')
+
+MARK = Button(tk, text = "Mark Highlight", fg="green", command = highlightUpdate)
+MARK.grid(row = 7, column = 20, columnspan = 20)
+
 
 
 QUIT = Button(tk, text = "QUIT", fg = "red", command = quit).grid(row = 8, column = 1, sticky = 'w')

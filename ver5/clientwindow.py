@@ -18,8 +18,8 @@ def decodeStreamElements(webString):
         content.append(item.split(","))
     return content
 
-# url = 'http://192.168.0.92:9000'
-url = f"http://{sys.argv[1]}:{sys.argv[2]}"
+url = 'http://192.168.0.84:9000'
+#url = f"http://{sys.argv[1]}:{sys.argv[2]}"
 #uf = urllib.request.urlopen(url)
 #html = uf.read()
 

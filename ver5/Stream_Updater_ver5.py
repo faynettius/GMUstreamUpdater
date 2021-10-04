@@ -157,7 +157,7 @@ def clearG():
 
 # Clears all fields
 def clearA():
-    v0.set('')
+    # v0.set('')
     v1.set('')
     v2.set('')
     v3.set('')
@@ -237,10 +237,10 @@ v4.set('0')
 
 #Tournament Name
 v5 = StringVar()
-L5 = Label(tk, text="SSF# ").grid(row = 5, column = 1, sticky = 'e')
+L5 = Label(tk, text="Event: ").grid(row = 5, column = 1, sticky = 'e')
 E5 = Entry(tk, textvariable = v5)
 E5.grid(row = 5, column = 1, columnspan=4, ipadx = 10)
-v5.set('The Ladder #8')
+v5.set('Bring More Setups #97')
 
 #Buttons that add spaces in between the letter for the tournament name
 plusSpacesB = Button(tk, text = "+Space", command = lambda: addSpace(1)).grid(row = 5, column = 4)
